@@ -1,0 +1,50 @@
+.wrapper {
+    // background-color: red;
+}
+
+.terminal {
+    max-width: 700px;
+    // border: 1px solid black;     
+    margin: 0 auto;
+    position: absolute;
+    bottom: 75%;
+    left: 0;
+    right: 0;
+    font-family: 'Source Code Pro', sans-serif;
+
+    .label {
+        font-size: 24px;
+        
+        .userDefine {
+            color: #91ea39;
+        }
+    }
+
+    .pastCommands {
+        .pastCommand {
+            font-size: 24px;
+        }
+    }
+
+    .inp {
+        display: flex;
+        align-items: center;
+
+        .terminalInput {
+            flex-grow: 1;
+            width: 100%;
+            font-size: 24px;
+            margin-left: 14px;
+            outline: none;
+            border: none;
+            color: #fff;
+            background-color: transparent;
+            font-family: 'Source Code Pro', sans-serif;
+        }
+    }
+}
+
+
+
+        // Break...
+

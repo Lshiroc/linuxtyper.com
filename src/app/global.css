@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'Source Code Pro';
+    src: url('./../assets/fonts/SourceCodePro-Medium.ttf');
+}
+
+
+*, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+body {
+    font-size: 100%;
+    background-color: #2C001E;
+    color: #fff;
+}
+
+.sectionx {
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
