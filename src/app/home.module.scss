@@ -1,26 +1,27 @@
 .wrapper {
-    // background-color: red;
+    width: 100%;
+    display: grid;
+    justify-content: center;
 }
 
 .terminal {
     max-width: 700px;
-    // border: 1px solid black;     
-    margin: 0 auto;
-    position: absolute;
-    bottom: 75%;
-    left: 0;
-    right: 0;
+    position: relative;
+    margin-top: 150px;
     font-family: 'Source Code Pro', sans-serif;
 
     .label {
         font-size: 24px;
         
         .userDefine {
-            color: #91ea39;
+            color: #91ea39; 
         }
     }
 
     .pastCommands {
+        position: absolute;
+        bottom: 30px;
+
         .pastCommand {
             font-size: 24px;
         }
@@ -44,7 +45,31 @@
     }
 }
 
+.words {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 15px;
+    row-gap: 10px;
+    margin-top: 100px;
+    font-family: 'Source Code Pro', sans-serif;
+    max-width: 80%;
 
+    .word {
+        padding: 5px 5px;
+        border-radius: 2px;
+        font-size: 20px;
+        font-weight: 700;
+        background: #fff;
+        color: #2C001E;
+        
+        &.true {
+            box-shadow: 0 0 0 3px #2C001E,
+                    0 0 0 5px #91ea39;
+        } 
 
-        // Break...
-
+        &.wrong {
+            box-shadow: 0 0 0 3px #2C001E,
+            0 0 0 5px red;
+        }
+    }
+}
