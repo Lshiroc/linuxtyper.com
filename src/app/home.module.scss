@@ -45,12 +45,18 @@
     }
 }
 
+.timer {
+    font-size: 20px;
+    font-family: 'Source Code Pro', sans-serif;
+    margin-top: 100px;
+}
+
 .words {
     display: flex;
     flex-wrap: wrap;
     column-gap: 15px;
+    margin-top: 10px;
     row-gap: 10px;
-    margin-top: 100px;
     font-family: 'Source Code Pro', sans-serif;
     max-width: 80%;
 
@@ -70,6 +76,19 @@
         &.wrong {
             box-shadow: 0 0 0 3px #2C001E,
             0 0 0 5px red;
+        }
+    }
+}
+
+.results {
+    margin-top: 30px;
+    font-family: 'Source Code Pro', sans-serif;
+
+    .line {
+        display: flex;
+
+        .res {
+            margin-left: 10px;
         }
     }
 }
