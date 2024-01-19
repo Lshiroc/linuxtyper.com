@@ -1,5 +1,5 @@
 .wrapper {
-    width: 100%;
+    max-width: 850px;
     display: grid;
     justify-content: center;
 }
@@ -51,14 +51,23 @@
     margin-top: 100px;
 }
 
+.wordsSection {
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+    height: 90px;
+    padding: 5px;
+    background: red;
+    font-family: 'Source Code Pro', sans-serif;
+    max-width: 80%;
+}
+
 .words {
     display: flex;
     flex-wrap: wrap;
     column-gap: 15px;
-    margin-top: 10px;
     row-gap: 10px;
-    font-family: 'Source Code Pro', sans-serif;
-    max-width: 80%;
+    // transform: translateY(-0px);
 
     .word {
         padding: 5px 5px;
@@ -86,6 +95,11 @@
 
     .line {
         display: flex;
+
+        span {
+            text-decoration: underline;
+            cursor: pointer;
+        }
 
         .res {
             margin-left: 10px;

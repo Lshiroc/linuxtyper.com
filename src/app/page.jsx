@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export default function Home() {
 
   const [usedCommands, setUsedCommands] = useState([]);
-  const [commandList, setCommandList] = useState(["sudo su", "mkdir", "ls -la", "nmap -p- 10.20.3.4", "clear", "rm -f file.txt", "rf myFolder"]);
+  const [commandList, setCommandList] = useState(['ls', 'cd', 'pwd', 'cp', 'mv', 'rm', 'mkdir', 'rmdir', 'touch', 'cat', 'nano', 'vim', 'grep', 'find', 'chmod', 'chown', 'ps', 'kill', 'top', 'df', 'du', 'tar', 'gzip', 'ping', 'ifconfig', 'scp', 'ssh', 'wget', 'curl', 'uname', 'date', 'history', 'man', 'alias', 'echo', 'export', 'sudo', 'passwd', 'whoami', 'hostname', 'ln', 'uptime', 'journalctl', 'lsblk', 'fdisk', 'mount', 'umount', 'iwconfig', 'netstat', 'dd']);
   const [queue, setQueue] = useState(0);
   const [correct, setCorrect] = useState(true);
   const [correctList, setCorrectList] = useState([]);
@@ -23,28 +23,12 @@ export default function Home() {
     if(e.keyCode == 13) {
       setQueue(queue + 1);
 
-      if(!isPlaying) {
-        if(e.target.value == "restart") {
-          setIsPlaying(true);
-          setQueue(0);
-          setCorrectList([]);
-          setCorrect(true);
-          setTimer({time: 60, showcase: "1:00", start: false});
-          setResults({speed: 0, accuracy: 0, wrongCommands: 0, show: false});
-        
-          const command = e.target.value;
-          setUsedCommands([...usedCommands, command]);
-          e.target.value = "";
-        }
-
-      } else {
-
+      if(isPlaying) {
         if(e.target.value == commandList[queue]) {
           setCorrectList([...correctList, true]);
         } else {
           setCorrectList([...correctList, false]);
         }
-  
   
         if(e.target.value == "clear") {
           setUsedCommands([]);
@@ -67,6 +51,15 @@ export default function Home() {
         setCorrect(false);
       }
     }
+  }
+
+  const restartGame = () => {
+    setIsPlaying(false);
+    setQueue(0);
+    setCorrectList([]);
+    setCorrect(true);
+    setTimer({time: 60, showcase: "1:00", start: false});
+    setResults({speed: 0, accuracy: 0, wrongCommands: 0, show: false});
   }
 
   const calculateResults = () => {
@@ -114,9 +107,13 @@ export default function Home() {
         setTimer({...timer, time: timer.time-1, showcase});
       }, 1000);
 
+      if(timer.time == 0 || !isPlaying) {
+        clearTimeout(timeout);
+      }
+
       return () => clearTimeout(timeout);
     }
-  }, [timer])
+  }, [timer, isPlaying])
 
   return (
     <main className={`sectionx ${style.wrapper}`}>
@@ -134,12 +131,14 @@ export default function Home() {
         </div>
       </div>
       <div className={style.timer}>{timer.showcase}</div>
-      <div className={style.words}>
+      <div className={style.wordsSection}>
+        <div className={style.words}>
           {
             commandList.map((command, index) => (
               <div key={index} className={`${style.word} ${index == queue && correct ? style.true : index == queue && !correct && style.wrong}`}>{command}</div>
             ))
           }
+        </div>
       </div>
       {
         results.show && (
@@ -157,7 +156,7 @@ export default function Home() {
               <div className={style.res}>{results.wrongCommands}</div>
             </div>
             <div className={style.line}>
-              Enter 'restart' to play again
+              <span onClick={restartGame}>Restart</span>&nbsp;the game
             </div>
           </div>
         ) 
