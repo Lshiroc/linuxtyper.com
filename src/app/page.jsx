@@ -1,6 +1,6 @@
 "use client"
 import style from './home.module.scss'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function Home() {
 
@@ -12,6 +12,8 @@ export default function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [results, setResults] = useState({speed: 0, accuracy: 0, wrongCommands: 0, show: false});
   const [timer, setTimer] = useState({time: 60, showcase: "1:00", start: false});
+  const [lastDis, setLastDis] = useState({distance: 0, count: 0});
+  const wordContainer = useRef(null);
 
   const addCommand = (e) => {
     // Check if user Entered
@@ -19,8 +21,19 @@ export default function Home() {
       setIsPlaying(true);
       setTimer({...timer, start: true});
     }
-
+    
     if(e.keyCode == 13) {
+      let elParentDistance = wordContainer.current.getBoundingClientRect().right - wordContainer.current.children[queue+1].getBoundingClientRect().right;
+      if(lastDis.distance != 0) {
+        console.log(elParentDistance, lastDis.distance)
+        if(elParentDistance > lastDis.distance) {
+          console.log(lastDis.count)
+          wordContainer.current.style.transform = `translateY(-${(lastDis.count+1)*44}px)`;
+          setLastDis({distance: elParentDistance, count: lastDis.count+1});
+        }
+      } else {
+        setLastDis({distance: elParentDistance, count: lastDis.count});
+      }
       setQueue(queue + 1);
 
       if(isPlaying) {
@@ -53,6 +66,10 @@ export default function Home() {
     }
   }
 
+  useEffect(() => {
+    console.log(lastDis)
+  }, [lastDis])
+
   const restartGame = () => {
     setIsPlaying(false);
     setQueue(0);
@@ -65,7 +82,6 @@ export default function Home() {
   const calculateResults = () => {
     let corrects = 0;
     let wrongs = 0;
-    // let accuracy = 0;
     let speed = 0;
 
     correctList.map((correct) => {
@@ -103,7 +119,6 @@ export default function Home() {
         } else {
           showcase = "0:0" + (timer.time - 1);
         }
-        console.log(timer.time)
         setTimer({...timer, time: timer.time-1, showcase});
       }, 1000);
 
@@ -132,7 +147,7 @@ export default function Home() {
       </div>
       <div className={style.timer}>{timer.showcase}</div>
       <div className={style.wordsSection}>
-        <div className={style.words}>
+        <div className={style.words} ref={wordContainer}>
           {
             commandList.map((command, index) => (
               <div key={index} className={`${style.word} ${index == queue && correct ? style.true : index == queue && !correct && style.wrong}`}>{command}</div>
