@@ -15,6 +15,7 @@ export default function Home() {
   const [timer, setTimer] = useState({time: 60, showcase: "1:00", start: false});
   const [lastDis, setLastDis] = useState({distance: 0, count: 0});
   const wordContainer = useRef(null);
+  const input = useRef(null);
 
   const addCommand = (e) => {
     // Check if user Entered
@@ -81,6 +82,7 @@ export default function Home() {
     setQueue(0);
     setCorrectList([]);
     setCorrect(true);
+    input.current.value = "";
     setCommandList(allCommands.sort(() => Math.random() - 0.5));
     setTimer({time: 60, showcase: "1:00", start: false});
     setResults({speed: 0, accuracy: 0, wrongCommands: 0, show: false});
@@ -146,13 +148,13 @@ export default function Home() {
         <div className={style.pastCommands}>
           {
             usedCommands.map((command, index) => (
-              <div key={index} className={style.pastCommand}><span className={style.label}><span className={style.userDefine}>root@mycomputer</span>:~$</span> <span>{command}</span></div>
+              <div key={index} className={style.pastCommand}><span className={style.label}><span className={style.userDefine}>root@linuxtyper</span>:~$</span> <span>{command}</span></div>
             ))
           }
         </div>
         <div className={style.inp}>
-          <div className={style.label}><span className={style.userDefine}>root@mycomputer</span>:~$</div>
-          <input className={style.terminalInput} spellCheck={false} onKeyUp={(e) => addCommand(e)} type="text" />
+          <div className={style.label}><span className={style.userDefine}>root@linuxtyper</span>:~$</div>
+          <input className={style.terminalInput} ref={input} spellCheck={false} onKeyUp={(e) => addCommand(e)} type="text" />
         </div>
       </div>
       <div className={style.timer}>{timer.showcase}</div>
