@@ -1,6 +1,7 @@
 "use client"
 import style from './home.module.scss'
 import { useState, useEffect, useRef } from 'react';
+import GitHubButton from 'react-github-btn'
 
 export default function Home() {
 
@@ -186,8 +187,14 @@ export default function Home() {
               <span onClick={restartGame}>Restart</span>&nbsp;the game
             </div>
           </div>
-        ) 
+        )
       }
+      <div className={style.promote}>
+        <span className={style.madeBy}>made by <a target="_blank" href="https://github.com/Lshiroc" className={style.bylink}>Zeynal Mardanli (Lshiroc)</a></span>
+        <div className={style.star}>
+          <GitHubButton href="https://github.com/Lshiroc/linuxtyper.com" data-color-scheme="no-preference: light; light: dark; dark: light;" data-size="large" data-show-count="true" aria-label="Star Lshiroc/linuxtyper.com on GitHub">Star</GitHubButton>
+        </div>
+      </div>
     </main>
   )
 }

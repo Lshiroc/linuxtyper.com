@@ -107,3 +107,35 @@
         }
     }
 }
+
+.promote {
+    background-color: #400d30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    top: auto;
+    padding: 10px 0;
+    font-size: 14px;
+
+    .madeBy {
+        color: rgb(230, 230, 230);
+
+        .bylink {
+            color: rgb(202, 255, 69);
+
+            &:hover {
+                text-decoration: underline;
+            }
+    
+            &:hover, &:active, &:visited {
+                color: rgb(202, 255, 69);
+            }
+        }
+    }
+
+    .star {
+        margin-left: 15px;
+    }
+}
