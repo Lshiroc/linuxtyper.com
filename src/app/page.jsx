@@ -4,8 +4,9 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function Home() {
 
+  const allCommands = ["ls","cd","pwd","mkdir", "clear", "touch","cp","mv","rm","cat","echo","grep","chmod","chown","ps","kill","df","du","tar","gzip","uname","ifconfig","ping","traceroute","ssh","scp","curl","wget","sudo","apt","yum","systemctl","journalctl","top","htop","whoami","date","cal","history","find","sed","awk","head","tail","sort","uniq","wc","cut","paste","diff","patch","zip","unzip","free","bg","fg","jobs","nice","renice","at","chroot","cron","crontab","ulimit","mount","umount","fdisk","mkfs","dd","ln","lsmod","modinfo","insmod","rmmod","lsblk","lsof","netstat","ss","iwconfig","route","nmcli","hostname","passwd","useradd","userdel","groupadd","groupdel","usermod","su","visudo","w","who","last","finger","id","uptime","killall","pkill","pgrep","mkfifo","mknod","readlink","stat","sync","ul","blockdev","hwclock","lshw","lsusb","lspci","lsdev","udevadm","dmesg","logrotate","syslog","rmdir","watch","sleep","atq","atrm","ip","host","dig","nslookup","whois","tcpdump","wireshark","iftop","telnet","nc","nmap","openssl","rsync","ftp","ncftp","lynx","links","w3m","atop","iotop","nohup","service","chkconfig","systemd-analyze","systemd-cgtop","systemd-cat","systemd-coredumpctl","systemd-delta","systemd-detect-virt","systemd-escape","systemd-hwdb","systemd-inhibit","systemd-machine-id-setup","systemd-notify","systemd-nspawn","systemd-path","systemd-resolve","systemd-run","systemd-stdio-bridge","systemd-sysusers","systemd-tmpfiles","systemd-tty-ask-password-agent","systemd-umount","systemd-update-utmp","systemd-verify","systemd-cgls"];
   const [usedCommands, setUsedCommands] = useState([]);
-  const [commandList, setCommandList] = useState(['ls', 'cd', 'pwd', 'cp', 'mv', 'rm', 'mkdir', 'rmdir', 'touch', 'cat', 'nano', 'vim', 'grep', 'find', 'chmod', 'chown', 'ps', 'kill', 'top', 'df', 'du', 'tar', 'gzip', 'ping', 'ifconfig', 'scp', 'ssh', 'wget', 'curl', 'uname', 'date', 'history', 'man', 'alias', 'echo', 'export', 'sudo', 'passwd', 'whoami', 'hostname', 'ln', 'uptime', 'journalctl', 'lsblk', 'fdisk', 'mount', 'umount', 'iwconfig', 'netstat', 'dd']);
+  const [commandList, setCommandList] = useState([]);
   const [queue, setQueue] = useState(0);
   const [correct, setCorrect] = useState(true);
   const [correctList, setCorrectList] = useState([]);
@@ -17,27 +18,27 @@ export default function Home() {
 
   const addCommand = (e) => {
     // Check if user Entered
+    if(timer.time == 0) return
     if(!isPlaying && e.target.value != "") {
       setIsPlaying(true);
       setTimer({...timer, start: true});
     }
     
     if(e.keyCode == 13) {
-      let elParentDistance = wordContainer.current.getBoundingClientRect().right - wordContainer.current.children[queue+1].getBoundingClientRect().right;
-      if(lastDis.distance != 0) {
-        console.log(elParentDistance, lastDis.distance)
-        if(elParentDistance > lastDis.distance) {
-          console.log(lastDis.count)
-          wordContainer.current.style.transform = `translateY(-${(lastDis.count+1)*44}px)`;
-          setLastDis({distance: elParentDistance, count: lastDis.count+1});
-        }
+      let elParentDistance = -(wordContainer.current.getBoundingClientRect().top - wordContainer.current.children[queue+1].getBoundingClientRect().top).toFixed(2);
+      if(elParentDistance > lastDis.distance) {
+        wordContainer.current.style.transform = `translateY(-${(lastDis.count+1)*45.5}px)`;
+        setLastDis({distance: elParentDistance, count: lastDis.count+1});
       } else {
         setLastDis({distance: elParentDistance, count: lastDis.count});
       }
-      setQueue(queue + 1);
-
+      
       if(isPlaying) {
-        if(e.target.value == commandList[queue]) {
+        if(e.target.value != "") {
+          setQueue(queue + 1);
+          setCorrect(true);
+        }
+        if(e.target.value.trim() == commandList[queue]) {
           setCorrectList([...correctList, true]);
         } else {
           setCorrectList([...correctList, false]);
@@ -58,7 +59,7 @@ export default function Home() {
       }
     } else if(isPlaying) {
       // Check if word is correct
-      if(commandList[queue].startsWith(e.target.value)) {
+      if(commandList[queue].startsWith(e.target.value.trim())) {
         setCorrect(true);
       } else {
         setCorrect(false);
@@ -66,15 +67,21 @@ export default function Home() {
     }
   }
 
+  const shuffleCommands = async () => {
+    let shuffled = await allCommands.sort(() => Math.random() - 0.5);
+    setCommandList(shuffled);
+  }
+
   useEffect(() => {
-    console.log(lastDis)
-  }, [lastDis])
+    shuffleCommands()
+  }, [])
 
   const restartGame = () => {
     setIsPlaying(false);
     setQueue(0);
     setCorrectList([]);
     setCorrect(true);
+    setCommandList(allCommands.sort(() => Math.random() - 0.5));
     setTimer({time: 60, showcase: "1:00", start: false});
     setResults({speed: 0, accuracy: 0, wrongCommands: 0, show: false});
   }
@@ -102,7 +109,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if(!isPlaying && queue == correctList.length) {
+    if(!isPlaying && queue == correctList.length && timer.time == 0) {
       calculateResults();
     }
   }, [isPlaying])
@@ -124,6 +131,9 @@ export default function Home() {
 
       if(timer.time == 0 || !isPlaying) {
         clearTimeout(timeout);
+        wordContainer.current.style.transform = `translateY(0px)`;
+        setLastDis({distance: 0, count: 0});
+        calculateResults();
       }
 
       return () => clearTimeout(timeout);
@@ -149,14 +159,14 @@ export default function Home() {
       <div className={style.wordsSection}>
         <div className={style.words} ref={wordContainer}>
           {
-            commandList.map((command, index) => (
+            commandList && commandList.map((command, index) => (
               <div key={index} className={`${style.word} ${index == queue && correct ? style.true : index == queue && !correct && style.wrong}`}>{command}</div>
             ))
           }
         </div>
       </div>
       {
-        results.show && (
+        results?.show && (
           <div className={style.results}>
             <div className={style.line}>
               <div className={style.label}>Type Speed: </div>

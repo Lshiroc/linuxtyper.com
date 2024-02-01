@@ -1,7 +1,7 @@
 .wrapper {
     max-width: 850px;
     display: grid;
-    justify-content: center;
+    // justify-content: center;
 }
 
 .terminal {
@@ -57,7 +57,7 @@
     overflow: hidden;
     height: 90px;
     padding: 5px;
-    background: red;
+    // background: red;
     font-family: 'Source Code Pro', sans-serif;
     max-width: 80%;
 }
@@ -68,6 +68,7 @@
     column-gap: 15px;
     row-gap: 10px;
     transform: translateY(0px);
+    user-select: none;
 
     .word {
         padding: 5px 5px;
