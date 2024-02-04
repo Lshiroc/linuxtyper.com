@@ -4,6 +4,8 @@ Linux terminal command typing test.
 Site: [LinuxTyper.com](https://linuxtyper.com)<br/>
 Source Code: [github.com/Lshiroc/linuxtyper.com](https://github.com/Lshiroc/linuxtyper.com/)
 
+![Screenshot](./screenshot.png)
+
 ## Technologies & Tools
 Used NextJS, SASS and Firebase
 
